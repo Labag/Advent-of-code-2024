@@ -6,5 +6,9 @@ public class Main {
 
         // day 1 pb 2
         System.out.println("Day 1-2 :" + pb1.ResolveProblem2());
+
+        // day 2 pb 1
+        Day2 day2 = new Day2();
+        System.out.println("Day 2-1 :" + day2.ResolveProblem1());
     }
 }
