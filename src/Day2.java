@@ -96,7 +96,7 @@ public class Day2 {
 
         for (int i = 0; i < initialList.size(); i++) {
             List<Integer> modifiedList = new ArrayList<>(initialList);
-            modifiedList.remove(i);
+            modifiedList.remove((int) i);
             generatedReports.add(modifiedList);
         }
         return generatedReports;
