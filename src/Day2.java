@@ -64,4 +64,41 @@ public class Day2 {
         }
         return true;
     }
+
+    // pb 2
+    public int ResolveProblem2() {
+        int sum = 0;
+        // nouvelle liste d'éléments contenant une liste de rapports listes de levels
+        List<List<List<Integer>>> newReportsList = new ArrayList<>();
+        for (List<Integer> report : reports) {
+            if (IsValid(report)) {
+                sum++;
+                continue;
+            }
+            List<List<Integer>> derivatedReports = GenerateReports(report);
+            newReportsList.add(derivatedReports);
+        }
+
+        // pour chaque list de reports, on regarde si le premier est valide, si oui on ajt sinon deuxième etc...
+        for (List<List<Integer>> generatedReportsList : newReportsList) {
+            for (List<Integer> report : generatedReportsList) {
+                if (IsValid(report)) {
+                    sum++;
+                    break;
+                }
+            }
+        }
+        return sum;
+    }
+
+    private List<List<Integer>> GenerateReports(List<Integer> initialList) {
+        List<List<Integer>> generatedReports = new ArrayList<>();
+
+        for (int i = 0; i < initialList.size(); i++) {
+            List<Integer> modifiedList = new ArrayList<>(initialList);
+            modifiedList.remove(i);
+            generatedReports.add(modifiedList);
+        }
+        return generatedReports;
+    }
 }
