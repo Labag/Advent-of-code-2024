@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 
@@ -26,7 +25,7 @@ public class Day1 {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -46,7 +45,7 @@ public class Day1 {
         return sum;
     }
 
-    public int smallestIndex(List<Integer> list) {
+    private int smallestIndex(List<Integer> list) {
         int smallest = 0;
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i) < list.get(smallest)) {
@@ -68,7 +67,7 @@ public class Day1 {
         return sum;
     }
 
-    public int numberOfOccurrences(List<Integer> list, int target) {
+    private int numberOfOccurrences(List<Integer> list, int target) {
         return (int) list.stream().filter(x -> x == target).count();
     }
 }

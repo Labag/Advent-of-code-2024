@@ -13,5 +13,12 @@ public class Main {
 
         // day 2 pb 2
         System.out.println("Day 2-2 :" + day2.ResolveProblem2());
+
+        // day 3 problem 1
+        Day3 day3 = new Day3();
+        System.out.println("Day 3-1 :" + day3.ResolveProblem1());
+
+        // day 3 problem 2
+        System.out.println("Day 3-2 :" + day3.ResolveProblem2());
     }
 }
