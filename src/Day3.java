@@ -56,6 +56,30 @@ public class Day3 {
     }
 
     public int ResolveProblem2() {
-        return 0;
+        int sum = 0;
+        List<String> muls = findMatches2();
+        for (String mul : muls) {
+            List<String> numbers = extractNumbers(mul);
+            sum += Integer.parseInt(numbers.getFirst()) * Integer.parseInt(numbers.get(1));
+        }
+        return sum;
+    }
+
+    private List<String> findMatches2() {
+        List<String> matches = new ArrayList<>();
+        String regex = "mul\\([0-9]{1,3},[0-9]{1,3}\\)|do\\(\\)|don't\\(\\)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(fileContent);
+        String lastInstruction = "do()";
+        while (matcher.find()) {
+            if (matcher.group().equals("do()") || matcher.group().equals("don't()")) {
+                lastInstruction = matcher.group();
+            } else {
+                if (lastInstruction.equals("do()")) {
+                    matches.add(matcher.group());
+                }
+            }
+        }
+        return matches;
     }
 }
