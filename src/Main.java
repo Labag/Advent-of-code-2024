@@ -25,8 +25,11 @@ public class Main {
         Day4 day4 = new Day4();
         System.out.println("Day 4-1 :" + day4.ResolveProblem1());
 
-        // day  5 problem 1
+        // day 5 problem 1
         Day5 day5 = new Day5();
         System.out.println("Day 5-1 :" + day5.ResolveProblem1());
+
+        // day 5 problem 2
+        System.out.println("Day 5-2 :" + day5.ResolveProblem2());
     }
 }
