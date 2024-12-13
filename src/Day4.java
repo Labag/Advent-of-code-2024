@@ -34,14 +34,6 @@ public class Day4 {
         return sum;
     }
 
-    // autre solution : je cherche un M autour du X
-    // même fonction, un A autour du M
-    // récursif un S autour du A
-    // direction :
-    // 1 2 3
-    // 4 / 5
-    // 6 7 8
-
     private int findOccurences(int i, int j) {
         int res = 0;
         boolean right = j+3 < charsMatrix.get(i).size();
@@ -102,5 +94,27 @@ public class Day4 {
                 res++;
         }
         return res;
+    }
+
+    public int ResolveProblem2() {
+        int sum = 0;
+        for (int i = 0; i < charsMatrix.size(); i++) {
+            for (int j = 0; j < charsMatrix.get(i).size(); j++) {
+                if (charsMatrix.get(i).get(j).equals("A")) {
+                    if (isXmas(i, j))
+                        sum += 1;
+                }
+            }
+        }
+        return sum;
+    }
+
+    private boolean isXmas(int i, int j) {
+        if (i-1 < 0 || i+1 > charsMatrix.size()-1 || j-1 < 0 || j+1 > charsMatrix.get(i).size()-1) {
+            return false;
+        }
+        List<String> diag1 = new ArrayList<>(List.of(charsMatrix.get(i-1).get(j-1), charsMatrix.get(i+1).get(j+1)));
+        List<String> diag2 = new ArrayList<>(List.of(charsMatrix.get(i-1).get(j+1), charsMatrix.get(i+1).get(j-1)));
+        return diag1.contains("M") && diag1.contains("S") && diag2.contains("M") && diag2.contains("S");
     }
 }
