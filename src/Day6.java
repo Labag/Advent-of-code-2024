@@ -90,4 +90,12 @@ public class Day6 {
             case Direction.right -> currentPosition.add(new Pair(0, 1));
         };
     }
+
+    public int ResolveProblem2() {
+        int sum = 0;
+        // remplacer un . par un #
+        // tester si ça boucle -> comment ?
+        // si oui return, sinon refaire avec un autre
+        return sum;
+    }
 }
