@@ -92,10 +92,9 @@ public class Day6 {
     }
 
     public int ResolveProblem2() {
-        int sum = 0;
         // remplacer un . par un #
         // tester si ça boucle -> comment ?
         // si oui return, sinon refaire avec un autre
-        return sum;
+        return 0;
     }
 }
