@@ -1,3 +1,5 @@
+import utils.Operators;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -34,24 +36,25 @@ public class Day7 {
         long sum = 0;
         for (int i = 0; i < equations.size(); i++) {
             Long result = testValues.get(i);
-            if (isValidEquation(equations.get(i), result)) {
+            if (isValidEquation(equations.get(i), result, false)) {
                 sum += result;
             }
         }
         return sum;
     }
 
-    private boolean isValidEquation(List<Integer> numbers, Long result) {
-        // false pour + et true pour *
-        List<List<Boolean>> configurations = getConfigurations(numbers.size()-1);
+    private boolean isValidEquation(List<Integer> numbers, Long result, boolean isProblem2) {
+        List<List<Operators>> configurations = getConfigurations(numbers.size()-1);
 
-        for (List<Boolean> config : configurations) {
+        for (List<Operators> config : configurations) {
             long value = numbers.getFirst();
             for (int i = 1; i < numbers.size(); i++) {
-                if (config.get(i-1)) {
+                if (config.get(i-1) == Operators.mult) {
                     value *= numbers.get(i);
-                } else {
+                } else if (config.get(i-1) == Operators.add){
                     value += numbers.get(i);
+                } else if (isProblem2 && config.get(i-1) == Operators.concat) {
+                        value = Long.parseLong(String.valueOf(value) + numbers.get(i));
                 }
             }
             if (value == result) {
@@ -61,33 +64,52 @@ public class Day7 {
         return false;
     }
 
-    private List<List<Boolean>> getConfigurations(int number) {
-        // list with just false
-        List<List<Boolean>> configs = new ArrayList<>();
-        List<Boolean> beginningByFalse = new ArrayList<>();
-        beginningByFalse.add(false);
-        // list with just true
-        List<Boolean> beginningByTrue = new ArrayList<>();
-        beginningByTrue.add(true);
+    private List<List<Operators>> getConfigurations(int number) {
+        // list with just mult
+        List<List<Operators>> configs = new ArrayList<>();
+        List<Operators> beginningByMult = new ArrayList<>();
+        beginningByMult.add(Operators.mult);
+        // list with just add
+        List<Operators> beginningByAdd = new ArrayList<>();
+        beginningByAdd.add(Operators.add);
+        // list with just concat
+        List<Operators> beginningByConcat = new ArrayList<>();
+        beginningByConcat.add(Operators.concat);
 
         if (number == 1) {
-            configs.add(beginningByFalse);
-            configs.add(beginningByTrue);
+            configs.add(beginningByMult);
+            configs.add(beginningByAdd);
+            configs.add(beginningByConcat);
             return configs;
         }
 
         // get the list of all possible configurations for a size of number-1
-        List<List<Boolean>> subConfigurations = getConfigurations(number-1);
-        // adding all the sub configurations to both the lists beginning by true and false
-        for (List<Boolean> subConfiguration : subConfigurations) {
-            List<Boolean> concatenatedListFalse = new ArrayList<>(beginningByFalse);
-            concatenatedListFalse.addAll(subConfiguration);
-            configs.add(concatenatedListFalse);
+        List<List<Operators>> subConfigurations = getConfigurations(number-1);
+        // adding all the sub configurations to both the lists beginning by any operator
+        for (List<Operators> subConfiguration : subConfigurations) {
+            List<Operators> concatenatedListMult = new ArrayList<>(beginningByMult);
+            concatenatedListMult.addAll(subConfiguration);
+            configs.add(concatenatedListMult);
 
-            List<Boolean> concatenatedListTrue = new ArrayList<>(beginningByTrue);
-            concatenatedListTrue.addAll(subConfiguration);
-            configs.add(concatenatedListTrue);
+            List<Operators> concatenatedListAdd = new ArrayList<>(beginningByAdd);
+            concatenatedListAdd.addAll(subConfiguration);
+            configs.add(concatenatedListAdd);
+
+            List<Operators> concatenatedListConcat = new ArrayList<>(beginningByConcat);
+            concatenatedListConcat.addAll(subConfiguration);
+            configs.add(concatenatedListConcat);
         }
         return configs;
+    }
+
+    public long ResolveProblem2() {
+        long sum = 0;
+        for (int i = 0; i < equations.size(); i++) {
+            Long result = testValues.get(i);
+            if (isValidEquation(equations.get(i), result, true)) {
+                sum += result;
+            }
+        }
+        return sum;
     }
 }
