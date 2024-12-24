@@ -23,6 +23,10 @@ public class Day8 {
     }
 
     public int ResolveProblem1() {
+        return findAntinodes("problem1");
+    }
+
+    private int findAntinodes(String problem) {
         int sum = 0;
 
         List<List<String>> newMatrix = initResMatrix();
@@ -40,6 +44,9 @@ public class Day8 {
                     Pair pair2 = new Pair(pairs.get(j).x, pairs.get(j).y);
 
                     // calculer  diff de position
+                    if (problem == "problem1") continue;
+                    if (problem == "problem2") continue;
+
                     Pair node1;
                     Pair node2;
                     int diffX = Math.abs(pair1.x - pair2.x); // position en hauteur
@@ -109,5 +116,9 @@ public class Day8 {
         }
 
         return resMatrix;
+    }
+
+    public int ResolveProblem2() {
+        return findAntinodes("problem2");
     }
 }

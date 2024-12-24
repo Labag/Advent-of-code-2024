@@ -83,5 +83,9 @@ public class Main {
         // day 8 problem 1
         Day8 day8 = new Day8();
         System.out.println("Day 8-1 :" + day8.ResolveProblem1());
+
+        // day 8 problem 2
+        System.out.println("Day 8-2 :" + day8.ResolveProblem2());
     }
+
 }
