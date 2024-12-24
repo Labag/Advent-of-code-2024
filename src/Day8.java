@@ -40,10 +40,17 @@ public class Day8 {
                     Pair pair2 = new Pair(pairs.get(j).x, pairs.get(j).y);
 
                     // calculer  diff de position
+                    Pair node1;
+                    Pair node2;
                     int diffX = Math.abs(pair1.x - pair2.x); // position en hauteur
                     int diffY = Math.abs(pair1.y - pair2.y); // position en largeur
-                    Pair node1 = new Pair(pair1.x - diffX, pair1.y - diffY);
-                    Pair node2 = new Pair(pair2.x + diffX, pair2.y + diffY);
+                    if (pair1.y < pair2.y) {
+                        node1 = new Pair(pair1.x - diffX, pair1.y - diffY);
+                        node2 = new Pair(pair2.x + diffX, pair2.y + diffY);
+                    } else {
+                        node1 = new Pair(pair1.x - diffX, pair1.y + diffY);
+                        node2 = new Pair(pair2.x + diffX, pair2.y - diffY);
+                    }
 
                     if (isWithinBounds(node1, newMatrix)) {
                         if (!Objects.equals(newMatrix.get(node1.x).get(node1.y), "#")) {
