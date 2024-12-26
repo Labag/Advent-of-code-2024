@@ -43,39 +43,59 @@ public class Day8 {
                     Pair pair1 = new Pair(pairs.get(i).x, pairs.get(i).y);
                     Pair pair2 = new Pair(pairs.get(j).x, pairs.get(j).y);
 
-                    // calculer  diff de position
-                    if (problem == "problem1") continue;
-                    if (problem == "problem2") continue;
-
-                    Pair node1;
-                    Pair node2;
-                    int diffX = Math.abs(pair1.x - pair2.x); // position en hauteur
-                    int diffY = Math.abs(pair1.y - pair2.y); // position en largeur
-                    if (pair1.y < pair2.y) {
-                        node1 = new Pair(pair1.x - diffX, pair1.y - diffY);
-                        node2 = new Pair(pair2.x + diffX, pair2.y + diffY);
-                    } else {
-                        node1 = new Pair(pair1.x - diffX, pair1.y + diffY);
-                        node2 = new Pair(pair2.x + diffX, pair2.y - diffY);
+                    if (Objects.equals(problem, "problem1")) {
+                        sum += addNewAntinodes(pair1, pair2, 1, newMatrix);
                     }
 
-                    if (isWithinBounds(node1, newMatrix)) {
-                        if (!Objects.equals(newMatrix.get(node1.x).get(node1.y), "#")) {
-                            newMatrix.get(node1.x).set(node1.y, "#");
-                            sum++;
-                        }
-                    }
-
-                    if (isWithinBounds(node2, newMatrix)) {
-                        if (!Objects.equals(newMatrix.get(node2.x).get(node2.y), "#")) {
-                            newMatrix.get(node2.x).set(node2.y, "#");
-                            sum++;
+                    if (Objects.equals(problem, "problem2")) {
+                        boolean addMore = true;
+                        int k = 1;
+                        while (addMore) {
+                            int res = addNewAntinodes(pair1, pair2, k, newMatrix);
+                            sum += res;
+                            k++;
+                            addMore = res > 0; // if we didn't add any, we don't need to continue
                         }
                     }
                 }
             }
         }
         return sum;
+    }
+
+    private int addNewAntinodes(Pair pair1, Pair pair2, int k, List<List<String>> newMatrix) {
+        int newAntinodes = 0;
+
+        Pair node1;
+        Pair node2;
+
+        int diffX = Math.abs(pair1.x - pair2.x); // position en hauteur
+        int diffY = Math.abs(pair1.y - pair2.y); // position en largeur
+        if (pair1.y < pair2.y) {
+            node1 = new Pair(pair1.x - k * diffX, pair1.y - k * diffY);
+            node2 = new Pair(pair2.x + k * diffX, pair2.y + k * diffY);
+        } else {
+            node1 = new Pair(pair1.x - k * diffX, pair1.y + k * diffY);
+            node2 = new Pair(pair2.x + k * diffX, pair2.y - k * diffY);
+        }
+
+        boolean isWithinBounds1 = isWithinBounds(node1, newMatrix);
+        boolean isWithinBounds2 = isWithinBounds(node2, newMatrix);
+        if (isWithinBounds1) {
+            if (!Objects.equals(newMatrix.get(node1.x).get(node1.y), "#")) {
+                newMatrix.get(node1.x).set(node1.y, "#");
+                newAntinodes++;
+            }
+        }
+
+        if (isWithinBounds2) {
+            if (!Objects.equals(newMatrix.get(node2.x).get(node2.y), "#")) {
+                newMatrix.get(node2.x).set(node2.y, "#");
+                newAntinodes++;
+            }
+        }
+
+        return newAntinodes;
     }
 
     private boolean isWithinBounds(Pair node, List<List<String>> newMatrix) {
