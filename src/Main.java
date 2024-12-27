@@ -2,7 +2,7 @@ import utils.RunningConfiguration;
 
 public class Main {
     public static void main(String[] args) {
-        RunningConfiguration day = RunningConfiguration.day8;
+        RunningConfiguration day = RunningConfiguration.day9;
 
         switch (day) {
             case day1 -> runDay1();
@@ -13,6 +13,7 @@ public class Main {
             case day6 -> runDay6();
             case day7 -> runDay7();
             case day8 -> runDay8();
+            case day9 -> runDay9();
         }
     }
 
@@ -86,6 +87,12 @@ public class Main {
 
         // day 8 problem 2
         System.out.println("Day 8-2 :" + day8.ResolveProblem2());
+    }
+
+    private static void runDay9() {
+        // day 9 problem 1
+        Day9 day9 = new Day9();
+        System.out.println("Day 9-1 :" + day9.ResolveProblem1());
     }
 
 }
