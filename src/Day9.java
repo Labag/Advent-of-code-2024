@@ -1,3 +1,5 @@
+import utils.Pair;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -5,6 +7,7 @@ import java.util.List;
 
 public class Day9 {
     private final List<Integer> diskMap;
+    private int idAlreadyExplored;
 
     public Day9() {
         String filePath = "src/inputs/input-9.txt";
@@ -85,5 +88,59 @@ public class Day9 {
             }
         }
         return blocksList;
+    }
+
+    public long ResolveProblem2() {
+        List<String> blocksList = translateToBlockList();
+        idAlreadyExplored = blocksList.size()-1;
+        while (idAlreadyExplored > 1) {
+            while (blocksList.get(idAlreadyExplored).equals(".")) {
+                idAlreadyExplored--;
+            }
+            int endIndexLastFile = idAlreadyExplored;
+            findLastFile(blocksList);
+            int startIndexLastFile = idAlreadyExplored + 1;
+
+            int sizeLookingFor = (endIndexLastFile - startIndexLastFile) + 1;
+
+            int startIndexFirstBlank = findFirstBlankMatchingSize(blocksList, sizeLookingFor);
+            if (startIndexFirstBlank != -1) {
+                for (int i = startIndexLastFile; i <= endIndexLastFile; i++) {
+                    blocksList.set(startIndexFirstBlank, blocksList.get(i));
+                    blocksList.set(i, ".");
+                    startIndexFirstBlank++;
+                }
+            }
+        }
+        return checkSum(blocksList);
+    }
+
+    private int findFirstBlankMatchingSize(List<String> blocksList, int sizeLookingFor) {
+        int start = -1;
+        int end;
+        for (int i = 0; i < blocksList.size(); i++) {
+            if (blocksList.get(i).equals(".")) {
+                if (start == -1) {
+                    start = i;
+                }
+                end = i;
+                if ((end - start) + 1 == sizeLookingFor) {
+                    return start;
+                }
+            } else {
+                start = -1;
+            }
+        }
+        return -1;
+    }
+
+    private void findLastFile(List<String> blocksList) {
+        String value = blocksList.get(idAlreadyExplored);
+        for (int i = idAlreadyExplored; i >= 0; i--) {
+            if (!blocksList.get(i).equals(value)) {
+                idAlreadyExplored = i;
+                break;
+            }
+        }
     }
 }
