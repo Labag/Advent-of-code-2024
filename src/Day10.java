@@ -8,6 +8,7 @@ public class Day10 {
 
     private final List<List<String>> charsMatrix;
     private final Set<Pair> ninePositions = new HashSet<>();
+    private final Set<List<Pair>> hikingTrails = new HashSet<>();
 
     public Day10() {
         String filePath = "src/inputs/input-10.txt";
@@ -41,24 +42,7 @@ public class Day10 {
     }
 
     private void findPathToNine(Pair p, String numberToFind) {
-        List<Pair> possiblePaths = new ArrayList<>();
-
-        // Offsets pour chaque direction : {dx, dy}
-        int[][] directions = {
-                {0, -1}, // gauche
-                {0, 1},  // droite
-                {-1, 0}, // haut
-                {1, 0}   // bas
-        };
-
-        for (int[] direction : directions) {
-            int newX = p.x + direction[0];
-            int newY = p.y + direction[1];
-
-            if (isWithinBounds(new Pair(newX, newY)) && Objects.equals(charsMatrix.get(newX).get(newY), numberToFind)) {
-                possiblePaths.add(new Pair(newX, newY));
-            }
-        }
+        List<Pair> possiblePaths = getPossiblePaths(p, numberToFind);
 
         if (Objects.equals(numberToFind, "9")) {
             ninePositions.addAll(possiblePaths);
@@ -85,5 +69,62 @@ public class Day10 {
             }
         }
         return zerosPositions;
+    }
+
+    public int ResolveProblem2() {
+        int sum = 0;
+        List<Pair> zerosPositions = findAllZerosPos();
+        for (Pair p : zerosPositions) {
+            sum+= rating(p);
+        }
+        return sum;
+    }
+
+    private int rating(Pair p) {
+        hikingTrails.clear();
+        List<Pair> trail = new ArrayList<>();
+        findPathToNine2(p, "1", trail);
+        return hikingTrails.size();
+    }
+
+    private void findPathToNine2(Pair p, String numberToFind, List<Pair> trail) {
+        trail.add(p);
+        List<Pair> possiblePaths = getPossiblePaths(p, numberToFind);
+
+        if (Objects.equals(numberToFind, "9")) {
+            for (Pair ninePosition : possiblePaths) {
+                trail.add(ninePosition);
+                hikingTrails.add(trail);
+                trail.remove(ninePosition);
+            }
+        } else {
+            int nextNumberToFind = Integer.parseInt(numberToFind) + 1;
+            for (Pair number : possiblePaths) {
+                findPathToNine2(number, Integer.toString(nextNumberToFind), trail);
+            }
+        }
+
+    }
+
+    private List<Pair> getPossiblePaths(Pair p, String numberToFind) {
+        List<Pair> possiblePaths = new ArrayList<>();
+
+        // Offsets pour chaque direction : {dx, dy}
+        int[][] directions = {
+                {0, -1}, // gauche
+                {0, 1},  // droite
+                {-1, 0}, // haut
+                {1, 0}   // bas
+        };
+
+        for (int[] direction : directions) {
+            int newX = p.x + direction[0];
+            int newY = p.y + direction[1];
+
+            if (isWithinBounds(new Pair(newX, newY)) && Objects.equals(charsMatrix.get(newX).get(newY), numberToFind)) {
+                possiblePaths.add(new Pair(newX, newY));
+            }
+        }
+        return possiblePaths;
     }
 }

@@ -103,6 +103,9 @@ public class Main {
         // day 10 problem 1
         Day10 day10 = new Day10();
         System.out.println("Day 10-1 :" + day10.ResolveProblem1());
+
+        // day 10 problem 2
+        System.out.println("Day 10-2 :" + day10.ResolveProblem2());
     }
 
 }
