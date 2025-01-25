@@ -1,4 +1,3 @@
-import utils.Direction;
 import utils.Pair;
 
 import java.io.BufferedReader;
@@ -43,40 +42,37 @@ public class Day10 {
 
     private void findPathToNine(Pair p, String numberToFind) {
         List<Pair> possiblePaths = new ArrayList<>();
-        // gauche
-        if (isWithinBounds(Direction.left, p))
-            if (Objects.equals(charsMatrix.get(p.x).get(p.y - 1), numberToFind))
-                possiblePaths.add(new Pair(p.x, p.y-1));
 
-        // droite
-        if (isWithinBounds(Direction.right, p))
-            if (Objects.equals(charsMatrix.get(p.x).get(p.y + 1), numberToFind))
-                possiblePaths.add(new Pair(p.x, p.y+1));
-        // haut
-        if (isWithinBounds(Direction.up, p))
-            if (Objects.equals(charsMatrix.get(p.x - 1).get(p.y), numberToFind))
-                possiblePaths.add(new Pair(p.x - 1, p.y));
-        // bas
-        if (isWithinBounds(Direction.down, p))
-            if (Objects.equals(charsMatrix.get(p.x + 1).get(p.y), numberToFind))
-                possiblePaths.add(new Pair(p.x + 1, p.y));
+        // Offsets pour chaque direction : {dx, dy}
+        int[][] directions = {
+                {0, -1}, // gauche
+                {0, 1},  // droite
+                {-1, 0}, // haut
+                {1, 0}   // bas
+        };
+
+        for (int[] direction : directions) {
+            int newX = p.x + direction[0];
+            int newY = p.y + direction[1];
+
+            if (isWithinBounds(new Pair(newX, newY)) && Objects.equals(charsMatrix.get(newX).get(newY), numberToFind)) {
+                possiblePaths.add(new Pair(newX, newY));
+            }
+        }
 
         if (Objects.equals(numberToFind, "9")) {
             ninePositions.addAll(possiblePaths);
         } else {
+            int nextNumberToFind = Integer.parseInt(numberToFind) + 1;
             for (Pair number : possiblePaths) {
-                findPathToNine(number, Integer.toString(Integer.parseInt(numberToFind) + 1));
+                findPathToNine(number, Integer.toString(nextNumberToFind));
             }
         }
     }
 
-    private boolean isWithinBounds(Direction direction, Pair p) {
-        return switch (direction) {
-            case left -> p.y - 1 >= 0;
-            case right -> p.y + 1 < charsMatrix.getFirst().size();
-            case up -> p.x - 1 >= 0;
-            case down -> p.x + 1 < charsMatrix.size();
-        };
+    private boolean isWithinBounds(Pair p) {
+        return p.x >= 0 && p.x < charsMatrix.size() &&
+                p.y >= 0 && p.y < charsMatrix.getFirst().size();
     }
 
     private List<Pair> findAllZerosPos() {
