@@ -113,6 +113,10 @@ public class Main {
         // day 11 problem 1
         Day11 day11 = new Day11();
         System.out.println("Day 11-1 :" + day11.ResolveProblem1());
+
+        // day 11 problem 2
+        //System.out.println("Day 11-2 :" + day11.ResolveProblem2());
+        // problem with complexity
     }
 
 }
